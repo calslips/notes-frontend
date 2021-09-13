@@ -31,7 +31,6 @@ const App = (props) => {
     };
 
     noteService.create(noteObject).then((returnedNote) => {
-      console.log("create note returned note:", returnedNote);
       setNotes(notes.concat(returnedNote));
       setNewNote("");
     });
@@ -71,6 +70,7 @@ const App = (props) => {
         username,
         password,
       });
+      noteService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -106,7 +106,7 @@ const App = (props) => {
             password={password}
           />
         : <div>
-          <p>{user.name} logged in</p>
+            <p>{user.name} logged in</p>
             <NoteForm
               addNote={addNote}
               handleNoteChange={handleNoteChange}
