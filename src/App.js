@@ -15,6 +15,7 @@ const App = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [loginVisible, setLoginVisible] = useState(false);
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -95,14 +96,27 @@ const App = (props) => {
     }
   };
 
-  const handleUsernameChange = ({ target }) => {
-    console.log(target.value);
-    setUsername(target.value);
-  };
+  const loginForm = () => {
+    const hideWhenLoginVisible = { display: loginVisible ? 'none' : '' };
+    const showWhenLoginVisible = { display: loginVisible ? '' : 'none' };
 
-  const handlePasswordChange = ({ target }) => {
-    console.log(target.value);
-    setPassword(target.value);
+    return (
+      <div>
+        <div style={hideWhenLoginVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenLoginVisible}>
+          <LoginForm
+            handleLogin={handleLogin}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            username={username}
+            password={password}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -111,13 +125,7 @@ const App = (props) => {
       <Notification message={errorMessage} />
 
       {user === null
-        ? <LoginForm
-            handleLogin={handleLogin}
-            handleUsernameChange={handleUsernameChange}
-            handlePasswordChange={handlePasswordChange}
-            username={username}
-            password={password}
-          />
+        ? loginForm()
         : <div>
             <p>{user.name} logged in</p>
             <NoteForm
