@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import Note from "./components/Note";
-import Notification from "./components/Notification";
-import Footer from "./components/Footer";
-import LoginForm from "./components/LoginForm";
-import NoteForm from "./components/NoteForm";
-import Togglable from "./components/Togglable";
-import noteService from "./services/notes";
+import React, { useState, useEffect, useRef } from 'react';
+import Note from './components/Note';
+import Notification from './components/Notification';
+import Footer from './components/Footer';
+import LoginForm from './components/LoginForm';
+import NoteForm from './components/NoteForm';
+import Togglable from './components/Togglable';
+import noteService from './services/notes';
 
-const App = (props) => {
+const App = () => {
   const [notes, setNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -20,13 +20,15 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       noteService.setToken(user.token);
     }
   }, []);
+
+  const noteFormRef = useRef();
 
   const createNote = async (noteObject) => {
     noteFormRef.current.toggleVisibility();
@@ -45,9 +47,9 @@ const App = (props) => {
       .then((returnedNote) => {
         setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage(
-          `Note "${noteToToggle.content}" was already removed from server`
+          `Note '${noteToToggle.content}' was already removed from server`
         );
         setTimeout(() => {
           setErrorMessage(null);
@@ -58,9 +60,7 @@ const App = (props) => {
   const establishUser = (userLoggingIn) => {
     noteService.setToken(userLoggingIn.token);
     setUser(userLoggingIn);
-  }
-
-  const noteFormRef = useRef();
+  };
 
   return (
     <div>
@@ -69,24 +69,24 @@ const App = (props) => {
 
       {user === null
         ? <Togglable buttonLabel='login'>
-            <LoginForm
-              displayError={setErrorMessage}
-              establishUser={establishUser}
+          <LoginForm
+            displayError={setErrorMessage}
+            establishUser={establishUser}
+          />
+        </Togglable>
+        : <div>
+          <p>{user.name} logged in</p>
+          <Togglable buttonLabel='new note' ref={noteFormRef}>
+            <NoteForm
+              createNote={createNote}
             />
           </Togglable>
-        : <div>
-            <p>{user.name} logged in</p>
-            <Togglable buttonLabel='new note' ref={noteFormRef}>
-              <NoteForm
-                createNote={createNote}
-              />
-            </Togglable>
-          </div>
+        </div>
       }
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
+          show {showAll ? 'important' : 'all'}
         </button>
       </div>
       <ul>

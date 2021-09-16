@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import loginService from "../services/login";
+import loginService from '../services/login';
 
 const LoginForm = ({ displayError, establishUser }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -19,11 +19,11 @@ const LoginForm = ({ displayError, establishUser }) => {
         'loggedNoteappUser', JSON.stringify(userToLogin)
       );
 
-      setUsername("");
-      setPassword("");
+      setUsername('');
+      setPassword('');
       establishUser(userToLogin);
     } catch (exception) {
-      displayError("Wrong credentials");
+      displayError('Wrong credentials');
       setTimeout(() => {
         displayError(null);
       }, 5000);
@@ -37,22 +37,22 @@ const LoginForm = ({ displayError, establishUser }) => {
         <div>
           username
           <input
-            type="text"
+            type='text'
             value={username}
-            name="Username"
+            name='Username'
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password
           <input
-            type="password"
+            type='password'
             value={password}
-            name="Password"
+            name='Password'
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button type='submit'>login</button>
       </form>
     </div>
   );
