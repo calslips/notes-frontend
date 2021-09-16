@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
 import loginService from "../services/login";
 
 const LoginForm = ({ displayError, establishUser }) => {
@@ -55,7 +56,11 @@ const LoginForm = ({ displayError, establishUser }) => {
       </form>
     </div>
   );
-}
+};
 
+LoginForm.propTypes = {
+  displayError: PropTypes.func.isRequired,
+  establishUser: PropTypes.func.isRequired
+};
 
 export default LoginForm;
