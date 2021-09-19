@@ -19,4 +19,20 @@ describe('Note app', function() {
     cy.get('#login-button').click();
     cy.contains('Superuser logged in');
   });
+
+  describe('when logged in', function() {
+    beforeEach(function() {
+      cy.contains('login').click();
+      cy.get('#username').type('root');
+      cy.get('#password').type('sekret');
+      cy.get('#login-button').click();
+    });
+
+    it('a new note can be created', function() {
+      cy.contains('new note').click();
+      cy.get('.newNoteInput').type('Creating notes with cypress');
+      cy.contains('save').click();
+      cy.contains('Creating notes with cypress');
+    });
+  });
 });
