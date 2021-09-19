@@ -41,5 +41,25 @@ describe('Note app', function() {
       cy.contains('save').click();
       cy.contains('Creating notes with cypress');
     });
+
+    describe('and a note exists', function() {
+      beforeEach(function() {
+        cy.contains('new note').click();
+        cy.get('.newNoteInput').type('Testing notes importance toggle');
+        cy.contains('save').click();
+      });
+
+      it('can toggle note importance', function() {
+        // cy.get('.note').contains('make important');
+        // cy.get('.note').children().click();
+        // cy.get('.note').contains('make not important');
+        cy.contains('Testing notes importance toggle')
+          .contains('make important')
+          .click();
+
+        cy.contains('Testing notes importance toggle')
+          .contains('make not important');
+      });
+    });
   });
 });
