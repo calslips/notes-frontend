@@ -29,10 +29,7 @@ describe('Note app', function() {
 
   describe('when logged in', function() {
     beforeEach(function() {
-      cy.contains('login').click();
-      cy.get('#username').type('root');
-      cy.get('#password').type('sekret');
-      cy.get('#login-button').click();
+      cy.login({ username: 'root', password: 'sekret' });
     });
 
     it('a new note can be created', function() {
@@ -44,15 +41,13 @@ describe('Note app', function() {
 
     describe('and a note exists', function() {
       beforeEach(function() {
-        cy.contains('new note').click();
-        cy.get('.newNoteInput').type('Testing notes importance toggle');
-        cy.contains('save').click();
+        cy.createNote({
+          content: 'Testing notes importance toggle',
+          important: false
+        });
       });
 
       it('can toggle note importance', function() {
-        // cy.get('.note').contains('make important');
-        // cy.get('.note').children().click();
-        // cy.get('.note').contains('make not important');
         cy.contains('Testing notes importance toggle')
           .contains('make important')
           .click();
@@ -63,7 +58,7 @@ describe('Note app', function() {
     });
   });
 
-  it.only('login fails with wrong password', function() {
+  it('login fails with wrong password', function() {
     cy.contains('login').click();
     cy.get('#username').type('root');
     cy.get('#password').type('badpass');
