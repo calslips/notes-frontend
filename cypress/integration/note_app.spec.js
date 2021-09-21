@@ -67,11 +67,4 @@ describe('Note app', function() {
 
     cy.get('html').should('not.include.text', 'logged in');
   });
-
-  it('then example', function() {
-    cy.get('button').then((buttons) => {
-      console.log('number of buttons', buttons.length);
-      cy.wrap(buttons[0]).click();
-    });
-  });
 });
