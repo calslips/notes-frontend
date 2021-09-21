@@ -46,7 +46,7 @@ describe('Note app', function() {
         cy.createNote({ content: 'third note', important: false });
       });
 
-      it.only('one of them can be made important', function() {
+      it('one of them can be made important', function() {
         cy.contains('second note').parent().find('button').as('theButton');
         cy.get('@theButton').click();
         cy.get('@theButton').should('contain', 'make not important');
@@ -66,5 +66,12 @@ describe('Note app', function() {
       .and('have.css', 'border-style', 'solid');
 
     cy.get('html').should('not.include.text', 'logged in');
+  });
+
+  it('then example', function() {
+    cy.get('button').then((buttons) => {
+      console.log('number of buttons', buttons.length);
+      cy.wrap(buttons[0]).click();
+    });
   });
 });
