@@ -39,21 +39,17 @@ describe('Note app', function() {
       cy.contains('Creating notes with cypress');
     });
 
-    describe('and a note exists', function() {
+    describe('and several notes exist', function() {
       beforeEach(function() {
-        cy.createNote({
-          content: 'Testing notes importance toggle',
-          important: false
-        });
+        cy.createNote({ content: 'first note', important: false });
+        cy.createNote({ content: 'second note', important: false });
+        cy.createNote({ content: 'third note', important: false });
       });
 
-      it('can toggle note importance', function() {
-        cy.contains('Testing notes importance toggle')
-          .contains('make important')
-          .click();
-
-        cy.contains('Testing notes importance toggle')
-          .contains('make not important');
+      it.only('one of them can be made important', function() {
+        cy.contains('second note').parent().find('button').as('theButton');
+        cy.get('@theButton').click();
+        cy.get('@theButton').should('contain', 'make not important');
       });
     });
   });
